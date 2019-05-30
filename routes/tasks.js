@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Joi = require('joi');
 
 //TASK CLASS
 class Task {
@@ -18,7 +19,7 @@ tasks[0] = new Task(1, 'task from server', 'this is my first task retrieved from
 
 
 router.get('/', (req, res) => {
-    res.send(tasks[0]);
+    res.send(tasks);
 });
 
 //VALIDATION FUNCTION
@@ -48,18 +49,12 @@ router.post('/', (req, res) => {
         return res.status(400).send(result.error.details[0].message);
 
     //create object with new values and push to array
-    const taskObj = {
-        id: tasks.length + 1,
-        name: req.body.name,
-        description: req.body.description,
-        creationDate: new Date(),
-        completionDate: '',
-        status: 'to do'
-    };
     
+    var taskObj = new Task(tasks.length + 1, req.body.name, req.body.description);
     tasks.push(taskObj);
-    res.send(tasks);
+    res.send(taskObj);
 });
+
 //edit task
 router.put('/:id', (req,res) => {
     const task = tasks.find(tsk => tsk.id === parseInt(req.params.id));

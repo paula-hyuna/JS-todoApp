@@ -39,24 +39,12 @@ form.addEventListener('submit', function(event) {
       event.preventDefault(); //will keep the page from refreshing (refreshing is the default action)
 
       var task = new Task(todosArray.length + 1, taskName, description);
-
-      todosArray.push(task);
-      
-    //   $.ajax({
-    //     type: 'POST',
-    //     url:'/api/tasks',
-    //     data:{"name": taskName.value, "description": description.value},
-    //     dataType: 'text'
-    //     success: function(response) {
-    //         todosArray.push(response);
-
-    //     }
-    //   });
-    
-      //put value in array in local storage
-      localStorage.setItem('todos', JSON.stringify(todosArray));
-      todoMaker(task);
-      console.log(task);
+      addTask(task);
+    //   todosArray.push(task);
+    //    //put value in array in local storage
+    //    localStorage.setItem('todos', JSON.stringify(todosArray));
+    //   todoMaker(task);
+    //   console.log(task);
       name.value = '';
       description.value = '';
     })
@@ -73,23 +61,6 @@ function todoMaker(taskInfo) {
 
 }
 
-//display list items as found in storage 
-function getList() {
-    
-    $.ajax({
-        type: 'GET',
-        url:'/api/tasks/',
-        dataType: 'text',
-        success: function(response) {
-            console.log(response);
-            var myObj = JSON.parse(response);
-            todoMaker(myObj);
-            
-        }
-    });
-
-}
-
 
 button.addEventListener('click', function() {
 
@@ -101,6 +72,46 @@ button.addEventListener('click', function() {
         todoList.removeChild(todoList.firstChild);
     }
 })
+
+//AJAX**********************************
+
+//display list items as found in server storage
+function getList() {
+    
+    $.ajax({
+        type: 'GET',
+        url:'/api/tasks/',
+        dataType: 'text',
+        success: function(response) {
+            console.log(response);
+            var myArr = JSON.parse(response);
+            for(i=0;i<myArr.length;i++){
+                
+                var myObj = myArr[i];
+                todoMaker(myObj);
+            }
+        }
+    });
+
+}
+
+//Add task to the server storage
+function addTask(taskObj) {
+
+    $.ajax({
+        type: 'POST',
+        url:'/api/tasks/',
+        data: {"name": taskObj.name, "description": taskObj.description},
+        dataType: 'text',
+        success: function(response) {
+            var myObj = JSON.parse(response);
+            todoMaker(myObj);
+        }
+            
+    });
+
+}
+
 
 
 
