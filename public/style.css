@@ -1,6 +1,6 @@
 body {
     padding: 15px;
-    background-color: #66CCFF;
+    background-color: rgb(148, 102, 255);
     font-family: sans-serif;
 }
 
@@ -45,4 +45,11 @@ form textarea{
     margin-bottom: 15px;
     border-radius: 5px;
 }
+.fas {
+    font-size:40px;
+    color:red
+}
 
+.fas:hover{
+    cursor: pointer;
+}

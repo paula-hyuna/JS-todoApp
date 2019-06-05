@@ -76,8 +76,10 @@ router.put('/:id', (req,res) => {
 
 router.delete('/:id', (req, res) => {
     //look up course
+    
     const task = tasks.find(tsk => tsk.id === parseInt(req.params.id));
     //if not existing, return 404
+    console.log('Task to be deleted: ' + task);
     if(!task)
         return res.status(404).send('The course with the given id was not found');
     
